@@ -189,15 +189,15 @@ export const experience = [
 ];
 
 // ═══════════════════════════════════════════════════════════════
-//  🔶 SOCIAL LINKS — replace each url with your real profile
+//  SOCIAL LINKS — all real ✓
+//  Email opens Gmail compose addressed to Ally.
 // ═══════════════════════════════════════════════════════════════
 export const socials = [
-  { id: 'github',    label: 'GitHub',    url: 'https://github.com/your-profile' },      // 🔶 PLACEHOLDER
-  { id: 'facebook',  label: 'Facebook',  url: 'https://facebook.com/your-profile' },    // 🔶 PLACEHOLDER
-  { id: 'instagram', label: 'Instagram', url: 'https://instagram.com/your-profile' },   // 🔶 PLACEHOLDER
-  { id: 'linkedin',  label: 'LinkedIn',  url: 'https://linkedin.com/in/your-profile' }, // 🔶 PLACEHOLDER (optional)
-  { id: 'discord',   label: 'Discord',   url: 'https://discord.com/users/your-id' },    // 🔶 PLACEHOLDER (optional)
-  { id: 'email',     label: 'Email',     url: 'mailto:allysonfederio0311@gmail.com' },
+  { id: 'github',    label: 'GitHub',    url: 'https://github.com/Blangkooo' },
+  { id: 'facebook',  label: 'Facebook',  url: 'https://www.facebook.com/AllysonFederio/' },
+  { id: 'instagram', label: 'Instagram', url: 'https://www.instagram.com/allyfederiooo/' },
+  { id: 'linkedin',  label: 'LinkedIn',  url: 'https://www.linkedin.com/in/mark-allyson-federio/' },
+  { id: 'email',     label: 'Email',     url: 'https://mail.google.com/mail/?view=cm&fs=1&to=allysonfederio0311@gmail.com' },
 ];
 
 export const nav = [

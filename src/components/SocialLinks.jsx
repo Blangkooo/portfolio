@@ -10,7 +10,7 @@ export default function SocialLinks({ className = '' }) {
           key={s.id}
           className="social-btn"
           href={s.url}
-          target={s.id === 'email' ? undefined : '_blank'}
+          target="_blank"
           rel="noopener noreferrer"
           aria-label={s.label}
           data-label={s.label}

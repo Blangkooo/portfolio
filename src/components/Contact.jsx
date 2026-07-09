@@ -37,10 +37,13 @@ export default function Contact() {
       setStatus({ ok: data.success, msg: data.message });
       if (data.success) form.reset();
     } catch {
-      window.location.href = `mailto:${profile.email}?subject=${encodeURIComponent(
-        'Portfolio message from ' + name
-      )}&body=${encodeURIComponent(message + '\n\n— ' + name + ' (' + email + ')')}`;
-      setStatus({ ok: true, msg: 'Opening your email app instead…' });
+      // No backend (static hosting) → open Gmail compose addressed to Ally
+      const gmail =
+        `https://mail.google.com/mail/?view=cm&fs=1&to=${profile.email}` +
+        `&su=${encodeURIComponent('Portfolio message from ' + name)}` +
+        `&body=${encodeURIComponent(message + '\n\n— ' + name + ' (' + email + ')')}`;
+      window.open(gmail, '_blank');
+      setStatus({ ok: true, msg: 'Opening Gmail with your message…' });
     } finally {
       setSending(false);
     }
