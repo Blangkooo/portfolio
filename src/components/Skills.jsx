@@ -1,31 +1,29 @@
 import { skills } from '../data/content';
 import useReveal from '../hooks/useReveal';
 import Section from './Section';
-import Icon from './Icon';
 
-function SkillCard({ group, index }) {
-  const ref = useReveal();
-  return (
-    <div ref={ref} className="skill-card reveal" style={{ transitionDelay: `${index * 0.08}s` }}>
-      <div className="skill-card-head">
-        <span className="skill-card-icon"><Icon name={group.icon} size={20} /></span>
-        <h3>{group.category}</h3>
-      </div>
-      <div className="chip-row">
-        {group.items.map((item) => (
-          <span key={item} className="chip">{item}</span>
-        ))}
-      </div>
-    </div>
-  );
-}
-
+// Marquee of every skill + category rows underneath.
 export default function Skills() {
+  const listRef = useReveal();
+  const all = skills.flatMap((g) => g.items);
+  const strip = [...all, ...all]; // duplicated for a seamless loop
+
   return (
-    <Section id="skills" tag="WHAT I KNOW" title="My" accent="Skills">
-      <div className="skills-grid">
-        {skills.map((group, i) => (
-          <SkillCard key={group.category} group={group} index={i} />
+    <Section id="skills" num="02" title="Skills">
+      <div className="marquee" aria-hidden="true">
+        <div className="marquee-track">
+          {strip.map((s, i) => (
+            <span key={i} className="marquee-item">{s}<i>✦</i></span>
+          ))}
+        </div>
+      </div>
+
+      <div ref={listRef} className="skill-rows reveal">
+        {skills.map((g) => (
+          <div key={g.category} className="skill-row" data-hover>
+            <h3 className="skill-cat">{g.category}</h3>
+            <p className="skill-items mono">{g.items.join(' / ')}</p>
+          </div>
         ))}
       </div>
     </Section>

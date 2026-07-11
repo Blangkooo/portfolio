@@ -29,6 +29,10 @@ export const profile = {
 
   // 🔶 PLACEHOLDER — drop your real CV at public/cv/cv.pdf, this link will then work
   cvUrl: '/cv/cv.pdf',
+
+  // PHOTO — background-removed, black & white cutout at public/me-cutout.png
+  //         (To swap: drop a new transparent PNG here with the same name.)
+  photo: '/me-cutout.png',
 };
 
 export const about = {

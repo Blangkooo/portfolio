@@ -1,79 +1,109 @@
-import { profile } from '../data/content';
+import { useRef, useState } from 'react';
+import { profile, socials } from '../data/content';
 import useTypewriter from '../hooks/useTypewriter';
-import SocialLinks from './SocialLinks';
-import Icon from './Icon';
+
+const LINES = ['MARK', 'CHRISTIAN', 'ALLYSON', 'FEDERIO.'];
+
+// Split a line into letters that roll over on hover.
+function Letters({ text, lineIdx }) {
+  return text.split('').map((ch, i) => (
+    <span
+      className="lt"
+      data-ch={ch}
+      key={i}
+      style={{ animationDelay: `${2 + lineIdx * 0.1 + i * 0.028}s` }}
+    >
+      <span className="lt-in">{ch}</span>
+    </span>
+  ));
+}
 
 export default function Hero() {
   const typed = useTypewriter(profile.roles);
+  const cardRef = useRef(null);
+  const [hasPhoto, setHasPhoto] = useState(true);
+
+  // 3D tilt for the photo card only.
+  const onMove = (e) => {
+    const card = cardRef.current;
+    if (!card) return;
+    const c = card.getBoundingClientRect();
+    const dx = (e.clientX - (c.left + c.width / 2)) / c.width;
+    const dy = (e.clientY - (c.top + c.height / 2)) / c.height;
+    card.style.transform =
+      `rotate(3deg) perspective(900px) rotateY(${dx * 9}deg) rotateX(${-dy * 9}deg)`;
+  };
+  const onLeave = () => {
+    if (cardRef.current) cardRef.current.style.transform = 'rotate(3deg) perspective(900px)';
+  };
 
   return (
-    <section id="home" className="hero">
-      <div className="hero-grid">
+    <section id="home" className="hero" onMouseMove={onMove} onMouseLeave={onLeave}>
+      <div className="hero-meta mono">
+        <span>{profile.location.toUpperCase()}</span>
+        <span className="avail"><i className="avail-dot" />{profile.status.toUpperCase()}</span>
+        <span>CS @ ADNU</span>
+      </div>
 
-        {/* ── Left: intro ── */}
-        <div className="hero-left">
-          <p className="hero-kicker">
-            <Icon name="spark" size={13} /> {profile.status.toUpperCase()}
-          </p>
-          <p className="hero-greeting">HELLO, I'M</p>
-          <h1 className="hero-name">
-            Mark Christian <span className="gradient-text">Allyson</span> C. Federio
-          </h1>
-          <p className="hero-alias">— {profile.nickname} for short.</p>
+      <div className="hero-stage">
+        <h1 className="hero-title">
+          <span className="line">
+            <Letters text={LINES[0]} lineIdx={0} />
+            <span className="line-note mono dim">— {profile.nickname.toUpperCase()} FOR SHORT</span>
+          </span>
+          <span className="line"><Letters text={LINES[1]} lineIdx={1} /></span>
+          <span className="line indent accent"><Letters text={LINES[2]} lineIdx={2} /></span>
+          <span className="line"><Letters text={LINES[3]} lineIdx={3} /></span>
+        </h1>
 
-          <div className="hero-typed">
-            <span>{typed}</span>
-            <span className="caret">|</span>
+        {/* tilting photo card — overlaps the name, poster style */}
+        <div className="photo-card" ref={cardRef}>
+          <div className="photo-media">
+            {hasPhoto ? (
+              <img
+                src={profile.photo}
+                alt={profile.fullName}
+                onError={() => setHasPhoto(false)}
+              />
+            ) : (
+              <div className="photo-fallback">
+                <span className="photo-mark">{profile.initials}</span>
+                <span className="mono dim">ADD /public/me.jpg</span>
+              </div>
+            )}
           </div>
-
-          <p className="hero-bio">{profile.tagline}</p>
-
-          <div className="hero-actions">
-            {/* 🔶 CV placeholder — put your real file at public/cv/cv.pdf */}
-            <a className="btn btn-primary" href={profile.cvUrl} download>
-              <Icon name="download" size={17} /> Download CV
-            </a>
-            <a className="btn btn-ghost" href="#contact">
-              <Icon name="send" size={15} /> Contact Me
-            </a>
-          </div>
-
-          <SocialLinks className="hero-socials" />
-        </div>
-
-        {/* ── Right: live code card ── */}
-        <div className="hero-right">
-          <div className="code-card">
-            <div className="code-titlebar">
-              <span className="dot red" /><span className="dot yellow" /><span className="dot green" />
-              <span className="code-filename">ally.js</span>
-            </div>
-            <pre className="code-body">
-              <code>
-                <span className="c-kw">const</span> <span className="c-var">ally</span> = {'{'}{'\n'}
-                {'  '}<span className="c-key">name</span>: <span className="c-str">'{profile.nickname} Federio'</span>,{'\n'}
-                {'  '}<span className="c-key">school</span>: <span className="c-str">'Ateneo de Naga'</span>,{'\n'}
-                {'  '}<span className="c-key">degree</span>: <span className="c-str">'BS Computer Science'</span>,{'\n'}
-                {'  '}<span className="c-key">role</span>: <span className="c-str">'{typed}<span className="caret">|</span>'</span>,{'\n'}
-                {'  '}<span className="c-key">location</span>: <span className="c-str">'Naga City, PH'</span>,{'\n'}
-                {'  '}<span className="c-key">openToWork</span>: <span className="c-bool">true</span>,{'\n'}
-                {'}'};{'\n\n'}
-                <span className="c-var">ally</span>.<span className="c-fn">build</span>(<span className="c-str">'the future'</span>);
-              </code>
-            </pre>
-            <div className="code-glow" />
-          </div>
-
-          <div className="float-chip chip-a"><Icon name="brain" size={14} /> AI Enthusiast</div>
-          <div className="float-chip chip-b"><Icon name="server" size={14} /> Cloud Explorer</div>
-          <div className="float-chip chip-c"><Icon name="teach" size={14} /> Tutor</div>
+          <span className="sticker mono">★ OPEN TO WORK</span>
+          <span className="photo-caption mono">FIG. 01 — {profile.nickname.toUpperCase()}, {profile.location.split(',')[0].toUpperCase()}</span>
         </div>
       </div>
 
-      <a className="scroll-hint" href="#about" aria-label="Scroll down">
-        <span>SCROLL</span>
-        <div className="scroll-track"><div className="scroll-thumb" /></div>
-      </a>
+      <div className="hero-foot">
+        <p className="hero-role"><span className="role-tag mono">{typed}<span className="caret">_</span></span></p>
+        <p className="hero-bio">{profile.tagline}</p>
+        <div className="hero-links">
+          {/* CV lives at public/cv/cv.pdf */}
+          <a className="ulink" href={profile.cvUrl} download>Download CV ↓</a>
+          <a className="ulink" href="#contact">Contact me →</a>
+        </div>
+      </div>
+
+      <div className="hero-socials mono">
+        {socials.map((s) => (
+          <a key={s.id} href={s.url} target="_blank" rel="noopener noreferrer">
+            {s.label}
+          </a>
+        ))}
+        <span className="hero-scroll dim">SCROLL ↓</span>
+      </div>
+
+      {/* runway ticker */}
+      <div className="ticker" aria-hidden="true">
+        <div className="ticker-track">
+          {[...profile.roles, ...profile.roles, ...profile.roles].map((r, i) => (
+            <span key={i}>{r.toUpperCase()} <b>✦</b></span>
+          ))}
+        </div>
+      </div>
     </section>
   );
 }

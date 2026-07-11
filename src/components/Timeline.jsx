@@ -1,42 +1,27 @@
 import useReveal from '../hooks/useReveal';
-import Icon from './Icon';
 
-// Shared vertical timeline used by Education and Experience.
-export function TimelineItem({ icon, title, org, period, active, description, highlights, tags, index }) {
+// Minimal ledger row shared by Education and Experience.
+export function LedgerRow({ period, title, org, description, highlights, active, i }) {
   const ref = useReveal();
   return (
-    <div ref={ref} className="tl-item reveal" style={{ transitionDelay: `${index * 0.08}s` }}>
-      <div className={`tl-dot ${active ? 'glow' : ''}`} />
-      <div className="tl-card">
-        <div className="tl-head">
-          <span className="tl-icon"><Icon name={icon} size={18} /></span>
-          <div>
-            <h3>{title}</h3>
-            <span className="tl-org">{org}</span>
-          </div>
-        </div>
-        <div className="tl-period">
-          {period}
-          {active && <span className="badge-live">Active</span>}
-        </div>
-        <p className="tl-desc">{description}</p>
+    <div ref={ref} className="ledger-row reveal" style={{ transitionDelay: `${i * 0.06}s` }}>
+      <span className="ledger-period mono dim">
+        {period}{active && <em className="live-dot" title="Active" />}
+      </span>
+      <div className="ledger-body">
+        <h3>{title}</h3>
+        <span className="ledger-org mono">{org}</span>
+        {description && <p>{description}</p>}
         {highlights && (
-          <ul className="tl-highlights">
-            {highlights.map((h) => (
-              <li key={h}><Icon name="check" size={14} /><span>{h}</span></li>
-            ))}
+          <ul className="ledger-list">
+            {highlights.map((h) => <li key={h}>{h}</li>)}
           </ul>
-        )}
-        {tags && (
-          <div className="tag-row">
-            {tags.map((t) => <span key={t} className="tag tag-alt">{t}</span>)}
-          </div>
         )}
       </div>
     </div>
   );
 }
 
-export default function Timeline({ children }) {
-  return <div className="timeline">{children}</div>;
+export default function Ledger({ children }) {
+  return <div className="ledger">{children}</div>;
 }

@@ -1,14 +1,11 @@
 import { useState } from 'react';
-import { profile } from '../data/content';
+import { profile, socials } from '../data/content';
 import useReveal from '../hooks/useReveal';
 import Section from './Section';
-import SocialLinks from './SocialLinks';
-import Icon from './Icon';
 
 export default function Contact() {
-  const left = useReveal();
-  const right = useReveal();
-  const [status, setStatus] = useState(null); // { ok, msg }
+  const ref = useReveal();
+  const [status, setStatus] = useState(null);
   const [sending, setSending] = useState(false);
 
   async function handleSubmit(e) {
@@ -17,17 +14,13 @@ export default function Contact() {
     const name = form.name.value.trim();
     const email = form.email.value.trim();
     const message = form.message.value.trim();
-
     if (!name || !email || !message) {
       setStatus({ ok: false, msg: 'Please fill in all fields.' });
       return;
     }
-
     setSending(true);
     setStatus(null);
     try {
-      // Works when served behind the Express backend (server.js /api/contact).
-      // On a static-only deploy it falls back to opening the mail client.
       const res = await fetch('/api/contact', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -37,7 +30,7 @@ export default function Contact() {
       setStatus({ ok: data.success, msg: data.message });
       if (data.success) form.reset();
     } catch {
-      // No backend (static hosting) → open Gmail compose addressed to Ally
+      // Static hosting → open Gmail compose addressed to Ally
       const gmail =
         `https://mail.google.com/mail/?view=cm&fs=1&to=${profile.email}` +
         `&su=${encodeURIComponent('Portfolio message from ' + name)}` +
@@ -50,51 +43,41 @@ export default function Contact() {
   }
 
   return (
-    <Section id="contact" tag="GET IN TOUCH" title="Contact" accent="Me">
-      <div className="contact-grid">
-        <div ref={left} className="contact-info reveal">
-          <h3 className="gradient-text">Let's Build Something Together</h3>
-          <p>
-            I'm currently open to internship opportunities, freelance projects, and collaborations.
-            If you have an exciting project or just want to say hello, my inbox is always open.
-          </p>
-          <div className="contact-rows">
-            <div className="contact-row">
-              <span className="contact-ic"><Icon name="email" size={17} /></span>
-              <div><small>Email</small><strong>{profile.email}</strong></div>
-            </div>
-            <div className="contact-row">
-              <span className="contact-ic"><Icon name="location" size={17} /></span>
-              <div><small>Location</small><strong>{profile.location}</strong></div>
-            </div>
-            <div className="contact-row">
-              <span className="contact-ic"><Icon name="check" size={17} /></span>
-              <div><small>Status</small><strong>{profile.status}</strong></div>
-            </div>
-          </div>
-          <SocialLinks />
-        </div>
+    <Section id="contact" num="06" title="Contact">
+      <div ref={ref} className="contact reveal">
+        <p className="contact-lead">
+          Open to internships, freelance work, and collaborations.
+        </p>
+        <a
+          className="contact-mail"
+          href={`https://mail.google.com/mail/?view=cm&fs=1&to=${profile.email}`}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          {profile.email}
+        </a>
 
-        <form ref={right} className="contact-form reveal" onSubmit={handleSubmit} noValidate>
-          <label>
-            Your Name
-            <input name="name" type="text" placeholder="Mark Federio" required />
-          </label>
-          <label>
-            Your Email
-            <input name="email" type="email" placeholder="hello@example.com" required />
-          </label>
-          <label>
-            Message
-            <textarea name="message" rows="5" placeholder="Tell me about your project or opportunity…" required />
-          </label>
-          <button className="btn btn-primary btn-full" type="submit" disabled={sending}>
-            <Icon name="send" size={15} /> {sending ? 'Sending…' : 'Send Message'}
+        <form className="mform" onSubmit={handleSubmit} noValidate>
+          <div className="mform-row">
+            <input name="name" type="text" placeholder="NAME" required />
+            <input name="email" type="email" placeholder="EMAIL" required />
+          </div>
+          <textarea name="message" rows="4" placeholder="MESSAGE" required />
+          <button className="mform-send" type="submit" disabled={sending} data-hover>
+            {sending ? 'SENDING…' : 'SEND →'}
           </button>
           {status && (
-            <p className={`form-status ${status.ok ? 'success' : 'error'}`}>{status.msg}</p>
+            <p className={`mform-status mono ${status.ok ? '' : 'err'}`}>{status.msg}</p>
           )}
         </form>
+
+        <div className="contact-socials mono">
+          {socials.filter((s) => s.id !== 'email').map((s) => (
+            <a key={s.id} className="ulink" href={s.url} target="_blank" rel="noopener noreferrer">
+              {s.label} ↗
+            </a>
+          ))}
+        </div>
       </div>
     </Section>
   );

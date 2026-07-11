@@ -1,26 +1,24 @@
 import { experience } from '../data/content';
 import Section from './Section';
-import Timeline, { TimelineItem } from './Timeline';
+import Ledger, { LedgerRow } from './Timeline';
 
 export default function Experience() {
   return (
-    <Section id="experience" tag="MY JOURNEY" title="Work" accent="Experience" alt>
-      <Timeline>
+    <Section id="experience" num="05" title="Experience">
+      <Ledger>
         {experience.map((e, i) => (
-          <TimelineItem
+          <LedgerRow
             key={e.role}
-            index={i}
-            icon={e.icon}
-            title={e.role}
-            org={e.org}
+            i={i}
             period={e.period}
             active={e.active}
+            title={e.role}
+            org={e.org}
             description={e.description}
             highlights={e.highlights}
-            tags={e.tags}
           />
         ))}
-      </Timeline>
+      </Ledger>
     </Section>
   );
 }

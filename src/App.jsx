@@ -1,5 +1,6 @@
 import Loader from './components/Loader';
-import Starfield from './components/Starfield';
+import Twinkles from './components/Twinkles';
+import Progress from './components/Progress';
 import Navbar from './components/Navbar';
 import Hero from './components/Hero';
 import About from './components/About';
@@ -9,7 +10,6 @@ import Education from './components/Education';
 import Experience from './components/Experience';
 import Contact from './components/Contact';
 import Footer from './components/Footer';
-import BackToTop from './components/BackToTop';
 import useTheme from './hooks/useTheme';
 
 export default function App() {
@@ -18,9 +18,10 @@ export default function App() {
   return (
     <>
       <Loader />
-      <Starfield />
+      <Twinkles />
+      <Progress />
       <Navbar theme={theme} onToggleTheme={toggleTheme} />
-      <main>
+      <main className="page">
         <Hero />
         <About />
         <Skills />
@@ -30,7 +31,6 @@ export default function App() {
         <Contact />
       </main>
       <Footer />
-      <BackToTop />
     </>
   );
 }
