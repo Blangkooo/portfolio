@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <rect width="100" height="100" rx="22" fill="#0A0A0A"/>
+  <!-- Ally wordmark -->
+  <text x="46" y="50" text-anchor="middle" dominant-baseline="central"
+        font-family="Archivo, 'Arial Black', system-ui, sans-serif"
+        font-size="40" font-weight="900" letter-spacing="-2" fill="#F2F2F2">Ally</text>
+  <!-- acid-yellow accent dot -->
+  <rect x="76" y="58" width="11" height="11" rx="2" fill="#F5D90A"/>
+</svg>
