@@ -32,6 +32,7 @@ html {
   scroll-behavior: smooth; scroll-padding-top: 90px;
   background: var(--bg);
   transition: background var(--t);
+  overflow-x: hidden;   /* global guard: never scroll sideways on any device */
 }
 body {
   font-family: 'Archivo', sans-serif;
@@ -39,6 +40,7 @@ body {
   color: var(--fg);
   line-height: 1.6;
   overflow-x: hidden;
+  width: 100%; max-width: 100%;
   transition: color var(--t);
 }
 /* main content sits above the twinkles layer (z-index 0) */
@@ -231,8 +233,9 @@ body::after {
 
 /* ── runway ticker ── */
 .ticker {
-  position: absolute; bottom: -1px; left: 50%;
-  width: 100vw; transform: translateX(-50%) rotate(-1.1deg);
+  position: absolute; bottom: -1px;
+  left: calc(-1 * var(--pad)); right: calc(-1 * var(--pad));
+  transform: rotate(-1.1deg);
   background: var(--acc); color: var(--acc-ink);
   overflow: hidden; padding: 10px 0;
   border-block: 2px solid var(--acc-ink);
@@ -502,13 +505,14 @@ body::after {
 @media (max-width: 768px) {
   .burger { display: flex; }
   .menu {
-    position: fixed; inset: 0; z-index: -1;
+    position: fixed; inset: 0; z-index: 110;
     background: var(--bg); color: var(--fg);
     flex-direction: column; justify-content: center; align-items: flex-start;
     padding: var(--pad); gap: 8px;
-    opacity: 0; pointer-events: none; transition: opacity var(--t);
+    opacity: 0; visibility: hidden; pointer-events: none;
+    transition: opacity var(--t), visibility var(--t);
   }
-  .menu.open { opacity: 1; pointer-events: auto; z-index: 110; }
+  .menu.open { opacity: 1; visibility: visible; pointer-events: auto; }
   .menu-link { font-size: 2rem; font-weight: 800; text-transform: uppercase; }
   .hero-socials { position: static; margin-top: 40px; flex-wrap: wrap; }
   .mform-row { grid-template-columns: 1fr; }
